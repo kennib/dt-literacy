@@ -1,0 +1,250 @@
+---
+layout: default
+---
+
+{% assign p = page %}
+
+<div class="page">
+
+  <!-- Back link + title -->
+  <div class="lp-header">
+    <a class="back" href="{{ '/' | relative_url }}">← All Digital Technologies Materials</a>
+    <h1>{{ p.title }}</h1>
+    <div class="lp-meta">
+      <span class="badge badge-ink">
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="padding-top:5px;">
+          <img src="http://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by.svg" /></a>
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="color:white"> – Kenni Bawden</a>
+      </span>
+      {% if p.yearLevel %}
+        <span class="badge badge-green">📚 {{ p.yearLevel }}</span>
+      {% endif %}
+      {% if p.classTime %}
+        <span class="badge badge-amber">⏱ {{ p.classTime }}</span>
+      {% endif %}
+      {% if p.numberOfStudents %}
+        <span class="badge badge-blue">👥 {{ p.numberOfStudents }} students</span>
+      {% endif %}
+      {% if p.victorianCurriculumCapability %}
+        <span class="badge badge-purple">{{ p.victorianCurriculumCapability }}</span>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="lp-grid">
+
+    <!-- Row 1: Overview + At a Glance -->
+    <div class="grid col-2">
+
+      <div class="card">
+        <div class="card-head"><div class="ci ci-green">📖</div><h2>Overview</h2></div>
+        <div class="card-body">
+          {% if p.topicAndFocus %}
+            <div class="kv">
+              <span class="kv-l">Topic / Focus</span>
+              <span>{{ p.topicAndFocus }}</span>
+            </div>
+          {% endif %}
+          {% if p.victorianCurriculumCapability %}
+            <div class="kv">
+              <span class="kv-l">Curriculum Cap.</span>
+              <span>{{ p.victorianCurriculumCapability }}</span>
+            </div>
+          {% endif %}
+          <div style="margin-top:14px">
+            {% capture li_section %}{% include section.html body=content heading="Learning Intentions" %}{% endcapture %}
+            <div class="prose">{{ li_section }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="ci ci-amber">📊</div><h2>At a Glance</h2></div>
+        <div class="card-body">
+          {% if p.yearLevel %}
+            <div class="kv"><span class="kv-l">Year Level</span><span>{{ p.yearLevel }}</span></div>
+          {% endif %}
+          {% if p.classTime %}
+            <div class="kv"><span class="kv-l">Class Time</span><span>{{ p.classTime }}</span></div>
+          {% endif %}
+          {% if p.numberOfStudents %}
+            <div class="kv"><span class="kv-l">Students</span><span>{{ p.numberOfStudents }}</span></div>
+          {% endif %}
+          {% if p.keyVocabulary %}
+            <div style="margin-top:14px">
+              <div class="kv-l" style="display:block;margin-bottom:8px;font-size:.87rem;font-weight:600;color:var(--ink-soft)">Key Vocabulary</div>
+              <div class="tags">
+                {% for word in p.keyVocabulary %}
+                  <span class="tag">{{ word }}</span>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+    </div><!-- /row 1 -->
+
+    <!-- Row 2: Success Criteria + Curriculum Links -->
+    <div class="grid col-2">
+
+      <div class="card">
+        <div class="card-head"><div class="ci ci-purple">🎯</div><h2>Success Criteria</h2></div>
+        <div class="card-body">
+          {% capture sc_section %}{% include section.html body=content heading="Success Criteria" %}{% endcapture %}
+          <div class="prose prose-check">{{ sc_section }}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="ci ci-blue">📜</div><h2>Victorian Curriculum Links</h2></div>
+        <div class="card-body">
+          {% if p.curriculumLinks %}
+            <table class="curr-table">
+              <thead>
+                <tr><th>Level</th><th>Strand</th><th>Sub-strand</th><th>Key Elements</th></tr>
+              </thead>
+              <tbody>
+                {% for link in p.curriculumLinks %}
+                  <tr>
+                    <td>{{ link.level }}</td>
+                    <td>{{ link.strand }}</td>
+                    <td>{{ link.subStrand }}</td>
+                    <td>{{ link.keyElements }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% else %}
+            <p style="color:var(--ink-faint);font-size:.88rem">None specified.</p>
+          {% endif %}
+        </div>
+      </div>
+
+    </div><!-- /row 2 -->
+
+    <!-- Lesson Flow (full width) -->
+    <div class="card">
+      <div class="card-head"><div class="ci ci-amber">⏳</div><h2>Lesson Flow</h2></div>
+      <div class="card-body" style="padding:0">
+        {% if p.stages %}
+          <table class="flow-table">
+            <thead>
+              <tr>
+                <th>Stage</th>
+                <th>Student Activity</th>
+                <th>Time</th>
+                <th>Teacher Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for stage in p.stages %}
+                {% assign stage_lc = stage.stage | downcase %}
+                {% if stage_lc == "introduction" %}{% assign dot_class = "dot-intro" %}
+                {% elsif stage_lc == "body" %}{% assign dot_class = "dot-body" %}
+                {% elsif stage_lc == "conclusion" %}{% assign dot_class = "dot-concl" %}
+                {% else %}{% assign dot_class = "dot-other" %}{% endif %}
+                <tr>
+                  <td>
+                    <span class="stage-pill">
+                      <span class="dot {{ dot_class }}"></span>
+                      {{ stage.stage }}
+                    </span>
+                  </td>
+                  <td>{{ stage.studentAction }}</td>
+                  <td><span class="time-chip">{{ stage.time }}</span></td>
+                  <td>{{ stage.teacherAction }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <div style="padding:18px 20px;color:var(--ink-faint);font-size:.88rem">No stages defined.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Row 3: Assessment + ICT + Resources -->
+    <div class="grid col-3">
+
+      <div class="card">
+        <div class="card-head"><div class="ci ci-rose">📝</div><h2>Assessment Strategies</h2></div>
+        <div class="card-body">
+          {% capture as_section %}{% include section.html body=content heading="Assessment Strategies" %}{% endcapture %}
+          <div class="prose">{{ as_section }}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="ci ci-teal">💻</div><h2>ICT Considerations</h2></div>
+        <div class="card-body">
+          {% capture ict_section %}{% include section.html body=content heading="ICT Considerations" %}{% endcapture %}
+          <div class="prose">{{ ict_section }}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="ci ci-purple">🛒</div><h2>Resources &amp; Materials</h2></div>
+        <div class="card-body">
+          {% capture res_section %}{% include section.html body=content heading="Resources and Materials" %}{% endcapture %}
+          <div class="prose prose-arrows">{{ res_section }}</div>
+        </div>
+      </div>
+
+    </div><!-- /row 3 -->
+
+    <!-- Differentiation (full width) -->
+    <div class="card">
+      <div class="card-head"><div class="ci ci-green">🌿</div><h2>Differentiation</h2></div>
+      <div class="card-body">
+        {% capture diff_section %}{% include section.html body=content heading="Differentiation" %}{% endcapture %}
+        <div class="prose">{{ diff_section }}</div>
+      </div>
+    </div>
+
+    <!-- Reflection (full width) -->
+    <div class="card">
+      <div class="card-head"><div class="ci ci-blue">🔍</div><h2>Post-lesson Reflection</h2></div>
+      <div class="card-body">
+        <div class="refl-grid">
+          {% capture r1 %}{% include subsection.html body=content h2="Reflection" h3="What the students understood" %}{% endcapture %}
+          {% capture r2 %}{% include subsection.html body=content h2="Reflection" h3="What I need to revisit with the students" %}{% endcapture %}
+          {% capture r3 %}{% include subsection.html body=content h2="Reflection" h3="What I would change when I next teach this lesson" %}{% endcapture %}
+
+          <div class="refl-item">
+            <h4>What students understood</h4>
+            <div class="prose">{{ r1 }}</div>
+          </div>
+          <div class="refl-item">
+            <h4>What I need to revisit</h4>
+            <div class="prose">{{ r2 }}</div>
+          </div>
+          <div class="refl-item">
+            <h4>What I would change next time</h4>
+            <div class="prose">{{ r3 }}</div>
+          </div>
+        </div>
+
+        {% capture dev %}{% include subsection.html body=content h2="Reflection" h3="How I could develop this lesson further" %}{% endcapture %}
+        {% if dev != "" %}
+          <div class="divider-label">Develop further with</div>
+          <div class="dev-grid">
+            <div class="dev-item">
+              <h5>🌿 Differentiation</h5>
+              <div class="prose">{{ dev | split: "<strong>Differentiation:</strong>" | last | split: "<strong>" | first }}</div>
+            </div>
+            <div class="dev-item">
+              <h5>💻 Technology</h5>
+              <div class="prose">{{ dev | split: "<strong>Technology:</strong>" | last | split: "<strong>" | first }}</div>
+            </div>
+            <div class="dev-item">
+              <h5>📝 Assessment</h5>
+              <div class="prose">{{ dev | split: "<strong>Assessment:</strong>" | last | split: "<strong>" | first }}</div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div><!-- /lp-grid -->
+</div><!-- /page -->

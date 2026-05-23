@@ -1,0 +1,45 @@
+---
+layout: default
+---
+
+<div class="page">
+  <div class="index-header">
+    <h1>Digital Technologies</h1>
+    <p>Activities, materials and articles for teaching Digital Technologies in Australian schools</p>
+  </div>
+
+  <h2>Articles</h2>
+  <div class="article-grid">
+    {% for article in site.articles %}
+      <a href="{{ article.url | relative_url }}" class="plan-card">
+        <h2>{{ article.title }}</h2>
+	    {{ article.excerpt | strip_html }}
+        <div class="pc-arrow">View article →</div>
+      </a>
+    {% endfor %}
+  </div>
+
+  <h2>Lesson plans</h2>
+  <div class="plan-grid">
+    {% for plan in site.lesson_plans %}
+      <a href="{{ plan.url | relative_url }}" class="plan-card">
+        <h2>{{ plan.title }}</h2>
+        <div class="pc-meta">
+          {% if plan.yearLevel %}
+            <span class="badge badge-green">{{ plan.yearLevel }}</span>
+          {% endif %}
+          {% if plan.classTime %}
+            <span class="badge badge-amber">{{ plan.classTime }}</span>
+          {% endif %}
+          {% if plan.victorianCurriculumCapability %}
+            <span class="badge badge-purple">{{ plan.victorianCurriculumCapability }}</span>
+          {% endif %}
+        </div>
+        {% if plan.topicAndFocus %}
+          <div class="pc-topic">{{ plan.topicAndFocus }}</div>
+        {% endif %}
+        <div class="pc-arrow">View plan →</div>
+      </a>
+    {% endfor %}
+  </div>
+</div>

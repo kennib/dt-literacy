@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+{% assign p = page %}
+
+<div class="page">
+
+  <!-- Back link + title -->
+  <div class="lp-header">
+    <a class="back" href="{{ '/' | relative_url }}">← All digital technologies materials</a>
+    <h1>{{ p.title }}</h1>
+    <p>Published on: {{ page.date | date: "%B %d, %Y" }}</p>
+    <div class="lp-meta">
+      <span class="badge badge-ink">
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="padding-top:5px;">
+          <img src="http://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by.svg" /></a>
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="color:white"> – Kenni Bawden</a>
+      </span>
+    </div>
+  </div>
+  <div class="prose">{{ content }}</div>
+</div><!-- /page -->

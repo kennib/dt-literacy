@@ -1,0 +1,35 @@
+title: Kenni DigiTech
+description: Victorian Curriculum lesson plans
+baseurl: ""   # set to "/your-repo-name" if not using a custom domain
+url: ""
+permalink: pretty
+
+collections:
+  lesson_plans:
+    output: true
+    permalink: /lesson-plans/:name/
+  articles:
+    output: true
+    permalink: /articles/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: lesson_plans
+    values:
+      layout: lesson
+  - scope:
+      path: ""
+      type: articles 
+    values:
+      layout: article
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - "**/template.md"

@@ -1,0 +1,26 @@
+{% comment %}
+  Extract a section from markdown content by ## heading.
+  Usage: {% include section.html body=content heading="Learning Intentions" %}
+{% endcomment %}
+
+{% assign lines = include.body | newline_to_br | split: '<br />' %}
+{% assign in_section = false %}
+{% assign section_content = "" %}
+
+{% for line in lines %}
+  {% assign trimmed = line | strip %}
+  
+  {% if trimmed contains '## ' %}
+    {% assign heading_text = trimmed | remove: '##' | strip %}
+    {% if heading_text == include.heading %}
+      {% assign in_section = true %}
+    {% elsif in_section %}
+      {% break %}
+    {% endif %}
+  {% elsif in_section and trimmed != "" and trimmed != "---" %}
+    {% assign section_content = section_content | append: line | append: "
+" %}
+  {% endif %}
+{% endfor %}
+
+{{ section_content | markdownify }}
